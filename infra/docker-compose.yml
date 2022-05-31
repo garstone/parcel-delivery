@@ -121,3 +121,27 @@ services:
       - postgres-courier:/data/postgres
     networks:
       parcelDelivery:
+
+  admin-service:
+    container_name: admin-service
+    depends_on:
+      - kafka
+    build:
+      context: ..\adminservice
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    networks:
+      parcelDelivery:
+
+  courier-service:
+    container_name: courier-service
+    depends_on:
+      - kafka
+    build:
+      context: ..\courierservice
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8001"
+    networks:
+      parcelDelivery:
