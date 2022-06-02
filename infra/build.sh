@@ -5,3 +5,6 @@ cd ../adminservice
 
 cd ../courierservice
 ./mvnw clean package -Dmaven.test.skip=true
+
+cd ../infra
+docker-compose build

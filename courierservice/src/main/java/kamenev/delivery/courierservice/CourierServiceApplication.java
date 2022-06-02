@@ -22,7 +22,7 @@ public class CourierServiceApplication {
 				.build();
 	}
 
-	@KafkaListener(id = "myId", topics = "topic1")
+	@KafkaListener(topics = "topic1")
 	public void listen(String in) {
 		System.out.println(in);
 	}
