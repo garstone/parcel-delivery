@@ -1,6 +1,7 @@
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    listener:
+      ack-mode: manual_immediate
     consumer:
       group-id: inter
       auto-offset-reset: earliest
@@ -18,3 +19,6 @@ spring:
     show-sql: false
     hibernate:
       ddl-auto: create
+
+  profiles:
+    default: local
