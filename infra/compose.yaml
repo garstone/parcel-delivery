@@ -10,6 +10,14 @@ networks:
     name: parcel-delivery-network
 
 services:
+  redis:
+    image: bitnami/redis
+    restart: unless-stopped
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+    networks:
+      parcel-delivery:
+
   nginx:
     image: nginx
     restart: unless-stopped
@@ -142,8 +150,6 @@ services:
     build:
       context: ..\adminservice
       dockerfile: Dockerfile
-#    ports:
-#      - "8001:8001"
     networks:
       parcel-delivery:
     environment:
@@ -157,9 +163,20 @@ services:
     build:
       context: ..\courierservice
       dockerfile: Dockerfile
-#    ports:
-#      - "8002:8001"
     networks:
       parcel-delivery:
     environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+  order-service:
+    container_name: order-service
+    depends_on:
+      - kafka
+      - postgres-order
+    build:
+      context: ..\orderservice
+      dockerfile: Dockerfile
+    networks:
+      parcel-delivery:
+    entrypoint:
       - "SPRING_PROFILES_ACTIVE=prod"
