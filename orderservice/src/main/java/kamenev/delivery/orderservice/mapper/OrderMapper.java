@@ -2,7 +2,8 @@ package kamenev.delivery.orderservice.mapper;
 
 import kamenev.delivery.orderservice.domain.Order;
 import kamenev.delivery.orderservice.dto.OrderDto;
-import kamenev.delivery.orderservice.model.OrderDetailsResponse;
+import kamenev.delivery.orderservice.dto.OrderDetails;
+import kamenev.delivery.orderservice.model.OrderCreateRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -12,8 +13,10 @@ public interface OrderMapper {
 
     public Order fromDto(OrderDto dto);
 
+    public Order fromOrderCreateRequest(OrderCreateRequest request);
+
     public OrderDto toDto(Order order);
 
-    public OrderDetailsResponse toOrderDetailsResponse(Order entity);
+    public OrderDetails toOrderDetailsResponse(Order entity);
 
 }

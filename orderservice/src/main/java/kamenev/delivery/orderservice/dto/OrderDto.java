@@ -4,13 +4,14 @@ import kamenev.delivery.orderservice.domain.Coordinates;
 import kamenev.delivery.orderservice.domain.Status;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
 
 @Data
-public class OrderDto {
+public class OrderDto implements Serializable {
     public UUID id;
     public UUID userId;
     public String userName;

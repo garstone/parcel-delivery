@@ -1,0 +1,43 @@
+spring:
+  kafka:
+    listener:
+      ack-mode: manual_immediate
+    consumer:
+      group-id: order-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/
+    username: admin
+    password: pass
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: orderHikariPool
+      auto-commit: false
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: create
+
+  profiles:
+    default: local
+
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 60000
+    ttl-hours: 72
+
+app:
+  security:
+    auth:
+      jwt:
+        base64-secret: QEQjc37ZVpN3FeHv19bCEkta9Q/laJHx+srin4lbEhCGwZ8qpzzdR08+zyumduyz6d80VGEfCf4tduZCc31ZOw==
+        access-token-ttl-hours: 48
+        refresh-token-ttl-hours: 168
+

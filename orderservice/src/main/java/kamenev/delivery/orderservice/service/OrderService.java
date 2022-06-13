@@ -7,7 +7,8 @@ import kamenev.delivery.orderservice.dto.OrderDto;
 import kamenev.delivery.orderservice.mapper.OrderMapper;
 import kamenev.delivery.orderservice.messaging.KafkaProducer;
 import kamenev.delivery.orderservice.model.AssignToCourierRequest;
-import kamenev.delivery.orderservice.model.OrderDetailsResponse;
+import kamenev.delivery.orderservice.dto.OrderDetails;
+import kamenev.delivery.orderservice.model.OrderCreateRequest;
 import kamenev.delivery.orderservice.model.TrackResponse;
 import kamenev.delivery.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,13 +31,13 @@ public class OrderService {
     private final TrackingService trackingService;
 
 
-    public OrderDetailsResponse create(OrderDto dto) {
-        Order order = mapper.fromDto(dto);
+    public OrderDetails create(OrderCreateRequest request) {
+        Order order = mapper.fromOrderCreateRequest(request);
         Order saved = repository.save(order);
         return mapper.toOrderDetailsResponse(saved);
     }
 
-    public OrderDetailsResponse changeDestination(UUID id, String destination) {
+    public OrderDetails changeDestination(UUID id, String destination) {
         Order order = getOrThrow(id);
         order.setDestination(destination);
         Order saved = repository.save(order);
@@ -47,17 +48,17 @@ public class OrderService {
         changeStatus(id, Status.CANCELED);
     }
 
-    public OrderDetailsResponse get(UUID id) {
+    public OrderDetails get(UUID id) {
         Order order = getOrThrow(id);
         return mapper.toOrderDetailsResponse(order);
     }
 
-    public List<OrderDetailsResponse> getByUserId(UUID userId) {
+    public List<OrderDetails> getByUserId(UUID userId) {
         List<Order> orders = repository.findAllByUserId(userId);
         return orders.stream().map(mapper::toOrderDetailsResponse).toList();
     }
 
-    public List<OrderDetailsResponse> getByCourierId(UUID courierId) {
+    public List<OrderDetails> getByCourierId(UUID courierId) {
         List<Order> orders = repository.findAllByCourierId(courierId);
         return orders.stream().map(mapper::toOrderDetailsResponse).toList();
     }

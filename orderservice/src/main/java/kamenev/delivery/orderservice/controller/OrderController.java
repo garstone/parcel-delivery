@@ -1,5 +1,6 @@
 package kamenev.delivery.orderservice.controller;
 
+import kamenev.delivery.orderservice.dto.OrderDetails;
 import kamenev.delivery.orderservice.dto.OrderDto;
 import kamenev.delivery.orderservice.model.*;
 import kamenev.delivery.orderservice.service.OrderService;
@@ -23,14 +24,14 @@ public class OrderController {
     private final OrderService service;
 
     @PutMapping
-    public ResponseEntity<OrderDetailsResponse> create(@Valid @RequestBody OrderDto orderDTO) {
-        OrderDetailsResponse response = service.create(orderDTO);
+    public ResponseEntity<OrderDetails> create(@Valid @RequestBody OrderCreateRequest request) {
+        OrderDetails response = service.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PatchMapping("/change-destination")
-    public ResponseEntity<OrderDetailsResponse> changeDestination(@Valid @RequestBody ChangeDestinationRequest request) {
-        OrderDetailsResponse response = service.changeDestination(request.id(), request.destination());
+    public ResponseEntity<OrderDetails> changeDestination(@Valid @RequestBody ChangeDestinationRequest request) {
+        OrderDetails response = service.changeDestination(request.id(), request.destination());
         return ResponseEntity.ok(response);
     }
 
@@ -41,17 +42,17 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDetailsResponse> getDetails(@NotNull @PathVariable UUID id) {
+    public ResponseEntity<OrderDetails> getDetails(@NotNull @PathVariable UUID id) {
         return ResponseEntity.ok(service.get(id));
     }
 
     @GetMapping("/user/{userId}")
-    public List<OrderDetailsResponse> getAllByUser(@NotNull @PathVariable UUID userId) {
+    public List<OrderDetails> getAllByUser(@NotNull @PathVariable UUID userId) {
         return service.getByUserId(userId);
     }
 
     @GetMapping("/courier/{courierId}")
-    public List<OrderDetailsResponse> getAllByCourier(@NotNull @PathVariable UUID courierId) {
+    public List<OrderDetails> getAllByCourier(@NotNull @PathVariable UUID courierId) {
         return service.getByCourierId(courierId);
     }
 

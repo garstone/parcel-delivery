@@ -1,15 +1,16 @@
-package kamenev.delivery.orderservice.model;
+package kamenev.delivery.orderservice.dto;
 
 import kamenev.delivery.orderservice.domain.Coordinates;
 import kamenev.delivery.orderservice.domain.Status;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
 @Data
-public class OrderDetailsResponse {
+public class OrderDetails implements Serializable {
     public String userName;
     public String userPhone;
     public UUID courierName;

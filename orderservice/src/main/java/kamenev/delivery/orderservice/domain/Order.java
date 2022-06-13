@@ -5,9 +5,9 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class Order implements Serializable {
+public class Order {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -72,6 +72,18 @@ public class Order implements Serializable {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order order)) return false;
+        return id.equals(order.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
 }
 
