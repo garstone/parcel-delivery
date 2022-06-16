@@ -50,14 +50,14 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: identity
+                name: identity-service
                 port:
                   number: 80
           - path: /order
             pathType: Prefix
             backend:
               service:
-                name: order
+                name: order-service
                 port:
                   number: 80
 ---
