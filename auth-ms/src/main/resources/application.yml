@@ -1,0 +1,50 @@
+spring:
+  profiles:
+    default: local
+
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 60000
+    ttl-hours: 336
+
+  cloud:
+    gateway:
+      routes:
+        - id: identity
+          uri: http://identity-service:7000/
+          predicates:
+            - Path=/identity/**
+          filters:
+            - RemoveRequestHeader=Bearer
+
+        - id: user
+          uri: http://user-service:7000/
+          predicates:
+            - Path=/user/**
+          filters:
+            - RemoveRequestHeader=Bearer
+
+app:
+  security:
+    auth:
+      jwt:
+        base64-secret: QEQjc37ZVpN3FeHv19bCEkta9Q/laJHx+srin4lbEhCGwZ8qpzzdR08+zyumduyz6d80VGEfCf4tduZCc31ZOw==
+        access-token-ttl-minutes: 10
+        refresh-token-ttl-hours: 336
+
+application:
+  cors:
+    allowedOrigins: "*"
+    allowedHeaders: "*"
+    allowedMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG

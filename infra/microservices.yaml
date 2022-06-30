@@ -1,0 +1,119 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 7001
+  selector:
+    service: order
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: identity-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 7000
+  selector:
+    service: identity
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 7002
+  selector:
+    service: auth
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+  labels:
+    app: auth
+spec:
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: auth-service
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 7000
+      targetPort: 8080
+  selector:
+    service: order
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order
+  labels:
+    app: order
+spec:
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      containers:
+        - name: order
+          image: order-service
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: identity-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 7000
+  selector:
+    service: identity
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity
+  labels:
+    app: identity
+spec:
+  selector:
+    matchLabels:
+      app: identity
+  template:
+    metadata:
+      labels:
+        app: identity
+    spec:
+      containers:
+        - name: identity
+          image: identity-service
+          ports:
+            - containerPort: 8080
+---
