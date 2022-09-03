@@ -11,8 +11,7 @@
 	<groupId>kamenev.delivery</groupId>
 	<artifactId>auth</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>auth</name>
-	<description>Demo project for Spring Boot</description>
+	<name>auth-ms</name>
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.0-M3</spring-cloud.version>

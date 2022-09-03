@@ -1,8 +1,8 @@
 package kamenev.delivery.orderservice.model;
 
+import jakarta.validation.constraints.NotNull;
 import kamenev.delivery.orderservice.domain.Status;
 
-import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record ChangeStatusRequest(

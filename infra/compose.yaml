@@ -104,12 +104,10 @@ services:
     container_name: postgres-order
     image: bitnami/postgresql:14.3.0
     restart: unless-stopped
-    depends_on:
-      - kafka
     environment:
       - POSTGRES_PASSWORD=pass
       - POSTGRES_USER=admin
-      - POSTGRES_DB=auction
+      - POSTGRES_DB=order
       - TZ=GMT+2
       - PGTZ=GMT+2
     #      - PGDATA=/data/postgres
