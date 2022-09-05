@@ -1,6 +1,5 @@
 package kamenev.delivery.orderservice.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kamenev.delivery.orderservice.dto.OrderDetails;
 import kamenev.delivery.orderservice.errors.ErrorResponse;
@@ -8,7 +7,6 @@ import kamenev.delivery.orderservice.model.ChangeDestinationRequest;
 import kamenev.delivery.orderservice.model.OrderCreateRequest;
 import kamenev.delivery.orderservice.service.OrderService;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,6 +131,8 @@ class OrderControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8"))
                 .andExpect(status().isBadRequest());
+
+        verify(orderService, times(0)).changeDestination(any(), any());
     }
 
     @Test
@@ -143,6 +143,8 @@ class OrderControllerTest {
                         .contentType(MediaType.ALL)
                         .characterEncoding("UTF-8"))
                 .andExpect(status().isOk());
+
+        verify(orderService, times(1)).cancel(any());
     }
 
     @Test
@@ -152,6 +154,7 @@ class OrderControllerTest {
                         .contentType(MediaType.ALL)
                         .characterEncoding("UTF-8"))
                 .andExpect(status().isBadRequest());
+        verify(orderService, times(0)).cancel(any());
     }
 
     // todo too lazy to test web layer more... maybe later

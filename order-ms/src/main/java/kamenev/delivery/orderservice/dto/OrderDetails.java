@@ -13,7 +13,7 @@ import java.util.UUID;
 public class OrderDetails implements Serializable {
     public String userName;
     public String userPhone;
-    public UUID courierName;
+    public String courierName;
     public String courierPhone;
     public long orderNumber;
     public String destination;

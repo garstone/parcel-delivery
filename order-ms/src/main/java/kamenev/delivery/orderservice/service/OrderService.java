@@ -90,7 +90,8 @@ public class OrderService {
     }
 
     private Order getOrThrow(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Order with id=%s does not exist", id)));
+        return repository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Order with id=%s does not exist", id)));
     }
 
 }
