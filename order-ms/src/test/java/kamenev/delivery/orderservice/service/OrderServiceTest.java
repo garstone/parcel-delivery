@@ -1,57 +1,60 @@
 package kamenev.delivery.orderservice.service;
 
-import kamenev.delivery.orderservice.domain.Order;
+import kamenev.delivery.orderservice.integration.AbstractDbTest;
 import kamenev.delivery.orderservice.model.OrderCreateRequest;
 import kamenev.delivery.orderservice.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.MockBeans;
-import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.UUID;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
+@ActiveProfiles("test")
 @SpringBootTest
-@ExtendWith(MockitoExtension.class)
-@ContextConfiguration
-class OrderServiceTest {
-
-    @Mock
-    private OrderRepository orderRepository;
-
-    @InjectMocks
-    private OrderService orderService;
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class OrderServiceTest extends AbstractDbTest {
 
     @Autowired
-    private ApplicationContext context;
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderService orderService;
+
+//    @PersistenceContext
+//    private EntityManager entityManager;
+
+//    @Autowired
+//    private ApplicationContext context;
+
+    private static final String[] EXCLUDED_COLS = {"id", "created_at", "updated_at"};
 
     @Test
-    void create_Ok() {
-        var orderCreateReq = new OrderCreateRequest(UUID.randomUUID(), "+79669991212", "Vladimir",
-                "Moscow, Kremlin", null);
-        var captor = ArgumentCaptor.forClass(Order.class);
-        var resultOrder = new Order();
-        resultOrder.setOrderNumber(1);
-        when(orderRepository.save(captor.capture())).thenReturn(resultOrder);
-
+    void create_Ok() throws Exception {
+        var orderCreateReq = new OrderCreateRequest(p.id1, "+79991234567", "Vladimir",
+                "Moscow, Kremlin", "comments");
         var res = orderService.create(orderCreateReq);
-        assertEquals(resultOrder.getOrderNumber(), res.getOrderNumber());
-        assertEquals(orderCreateReq.userId(), captor.getValue().getUserId());
+        assertData("expected.create.ok.xml", EXCLUDED_COLS);
     }
 
     @Test
-    void changeDestination() {
+    void changeDestination_Ok() throws Exception {
+        setupData("setup.change_destination.ok.xml");
+        var res = orderService.changeDestination(p.id1, "New destination");
+        assertData("expected.change_destination.ok.xml", EXCLUDED_COLS);
+    }
+
+    @Test
+    void changeDestination_OrderNotExists() throws Exception {
+        setupData("setup.change_destination.ok.xml");
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->
+                orderService.changeDestination(p.id2, "New destination"));
+        assertEquals("Order with id="+p.id2+" does not exist",
+                exception.getReason());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
     }
 
     @Test

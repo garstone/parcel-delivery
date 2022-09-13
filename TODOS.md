@@ -23,6 +23,7 @@ refresh - одноразовый токен с большим ttl. тоже ле
 5. etc
 - add passwords
 - think: move authority to nginx...?
+6. Tracking Service
 
 В конце - убрать все коменты и todos
 обавить везде ининтерфейсы для спринга

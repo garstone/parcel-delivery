@@ -1,31 +1,10 @@
 spring:
-  kafka:
-    listener:
-      ack-mode: manual_immediate
-    consumer:
-      group-id: order-group
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5434/order
-    username: admin
-    password: pass
-    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      pool-name: orderHikariPool
-      auto-commit: false
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
     hibernate:
       ddl-auto: create
-
-  profiles:
-    default: local
 
   jackson:
     visibility:

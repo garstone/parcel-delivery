@@ -7,21 +7,20 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.UUID;
 
 @Data
 public class OrderDetails implements Serializable {
-    public String userName;
-    public String userPhone;
-    public String courierName;
-    public String courierPhone;
-    public long orderNumber;
-    public String destination;
-    public Status status;
-    public Coordinates coordinates;
-    public LocalDateTime deliveryDatetime;
-    public LocalDateTime pickupDatetime;
-    public String comments;
-    public Date createdAt;
-    public Date updatedAt;
+    private String userName;
+    private String userPhone;
+    private String courierName;
+    private String courierPhone;
+    private long orderNumber;
+    private String destination;
+    private Status status;
+    private Coordinates coordinates;
+    private LocalDateTime deliveryDatetime;
+    private LocalDateTime pickupDatetime;
+    private String comments;
+    private Date createdAt;
+    private Date updatedAt;
 }
