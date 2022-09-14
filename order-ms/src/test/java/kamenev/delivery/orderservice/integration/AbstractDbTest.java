@@ -11,6 +11,7 @@ import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.ext.postgresql.PostgresqlDataTypeFactory;
 import org.junit.jupiter.api.Assertions;
+import org.springframework.test.annotation.DirtiesContext;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -21,11 +22,11 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Objects;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.dbunit.dataset.filter.DefaultColumnFilter.excludedColumnsTable;
 
 @Testcontainers
-public abstract class AbstractDbTest extends DataSourceBasedDBTestCase {
+@DirtiesContext
+public class AbstractDbTest extends DataSourceBasedDBTestCase {
     private static final String dbName = "test";
     private static final String userName = "sa";
     private static final String password = "sa";
@@ -34,9 +35,11 @@ public abstract class AbstractDbTest extends DataSourceBasedDBTestCase {
     private IDataSet dataset;
     private static final PostgresqlDataTypeFactory dataTypeFactory = new PostgresqlDataTypeFactory();
     protected final DatasetParameters p = new DatasetParameters();
+    private static DataSource dataSource;
 
+    @SuppressWarnings({"rawtypes", "resource"})
     @Container
-    private static final JdbcDatabaseContainer<?> container = new PostgreSQLContainer(imageName)
+    private static final JdbcDatabaseContainer container = new PostgreSQLContainer(imageName)
             .withDatabaseName(dbName)
             .withUsername(userName)
             .withPassword(password)
@@ -56,17 +59,18 @@ public abstract class AbstractDbTest extends DataSourceBasedDBTestCase {
         }
     }
 
-    @Override //todo need to solve long time ending test class problem
+    @Override
     public DataSource getDataSource() {
+        if (dataSource != null) {
+            return dataSource;
+        }
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(container.getJdbcUrl());
         hikariConfig.setUsername(container.getUsername());
         hikariConfig.setPassword(container.getPassword());
         hikariConfig.setDriverClassName(container.getDriverClassName());
-        hikariConfig.setMaximumPoolSize(200);
-        hikariConfig.setMaxLifetime(SECONDS.toMillis(5));
-        hikariConfig.setMinimumIdle(5);
-        return new HikariDataSource(hikariConfig);
+        dataSource = new HikariDataSource(hikariConfig);
+        return dataSource;
     }
 
     @Override
