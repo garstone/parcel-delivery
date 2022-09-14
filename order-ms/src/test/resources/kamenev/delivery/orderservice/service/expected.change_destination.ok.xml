@@ -2,7 +2,7 @@
 <dataset>
     <orders id="${id1}" user_id="89d77319-a775-457f-b447-76bfa62ef502" user_name="Vladimir"
     user_phone="+79991234567" destination="New destination" comments="comments"
-    courier_id="2b49e007-0fae-4999-bfb7-1ad74f335275" courier_name="Petrov" courier_phone="+79991234568" delivery_datetime="[null]" order_number="0"
+    courier_id="2b49e007-0fae-4999-bfb7-1ad74f335275" courier_name="Petrov" courier_phone="+79991234568" delivery_datetime="2022-01-08 04:05:06" order_number="0"
             pickup_datetime="[null]" status="CREATED"
     />
 </dataset>

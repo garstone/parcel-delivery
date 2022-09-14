@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import kamenev.delivery.orderservice.dto.OrderDetails;
 import kamenev.delivery.orderservice.dto.OrderDto;
 import kamenev.delivery.orderservice.model.*;
-import kamenev.delivery.orderservice.service.OrderService;
+import kamenev.delivery.orderservice.service.IOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Validated
 public class OrderController {
 
-    private final OrderService service;
+    private final IOrderService service;
 
     @PutMapping(value = "/create", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderDetails> create(@Valid @RequestBody OrderCreateRequest request) {

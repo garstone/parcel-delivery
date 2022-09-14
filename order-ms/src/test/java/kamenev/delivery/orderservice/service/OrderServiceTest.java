@@ -22,7 +22,7 @@ class OrderServiceTest extends AbstractDbTest {
     private OrderRepository orderRepository;
 
     @Autowired
-    private OrderService orderService;
+    private IOrderService orderService;
 
 //    @PersistenceContext
 //    private EntityManager entityManager;
@@ -42,14 +42,14 @@ class OrderServiceTest extends AbstractDbTest {
 
     @Test
     void changeDestination_Ok() throws Exception {
-        setupData("setup.change_destination.ok.xml");
+        setupData("setup.base.one_order.xml");
         var res = orderService.changeDestination(p.id1, "New destination");
         assertData("expected.change_destination.ok.xml", EXCLUDED_COLS);
     }
 
     @Test
     void changeDestination_OrderNotExists() throws Exception {
-        setupData("setup.change_destination.ok.xml");
+        setupData("setup.base.one_order.xml");
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->
                 orderService.changeDestination(p.id2, "New destination"));
         assertEquals("Order with id="+p.id2+" does not exist",
@@ -58,7 +58,20 @@ class OrderServiceTest extends AbstractDbTest {
     }
 
     @Test
-    void cancel() {
+    void cancel_Ok() throws Exception {
+        setupData("setup.base.one_order.xml");
+        orderService.cancel(p.id1);
+        assertData("expected.cancel_order.ok.xml", EXCLUDED_COLS);
+    }
+
+    @Test
+    void cancel_OrderNotExist() throws Exception {
+        setupData("setup.base.one_order.xml");
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->
+                orderService.cancel(p.id2));
+        assertEquals("Order with id="+p.id2+" does not exist",
+                exception.getReason());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
     }
 
     @Test

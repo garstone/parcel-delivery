@@ -5,7 +5,7 @@ import kamenev.delivery.orderservice.dto.OrderDetails;
 import kamenev.delivery.orderservice.errors.ErrorResponse;
 import kamenev.delivery.orderservice.model.ChangeDestinationRequest;
 import kamenev.delivery.orderservice.model.OrderCreateRequest;
-import kamenev.delivery.orderservice.service.OrderService;
+import kamenev.delivery.orderservice.service.IOrderService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -38,7 +38,7 @@ class OrderControllerTest {
     private ObjectMapper mapper;
 
     @MockBean
-    private OrderService orderService;
+    private IOrderService orderService;
 
     private MockMvc mockMvc;
 
