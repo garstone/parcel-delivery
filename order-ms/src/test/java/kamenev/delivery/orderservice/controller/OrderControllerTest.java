@@ -56,7 +56,7 @@ class OrderControllerTest {
 
     @Test
     void create_Ok() throws Exception{
-        var req = new OrderCreateRequest(UUID.randomUUID(), "+79991110011", "Vladimir", "Moscow, Kremlin", "");
+        var req = new OrderCreateRequest(UUID.randomUUID(), "+79991110011", "Vladimir", "Moscow, Kremlin", "Moscow", "");
         var orderDetails = new OrderDetails();
         orderDetails.setUserName("Vladimir");
         when(orderService.create(eq(req))).thenReturn(orderDetails);
@@ -71,7 +71,7 @@ class OrderControllerTest {
 
     @Test
     void create_ThrowsRuntimeException() throws Exception {
-        var req = new OrderCreateRequest(UUID.randomUUID(), "+79991110011", "Vladimir", "Moscow, Kremlin", "");
+        var req = new OrderCreateRequest(UUID.randomUUID(), "+79991110011", "Vladimir", "Moscow, Kremlin", "Moscow", "");
         var errResponse = new ErrorResponse("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
         when(orderService.create(req)).thenThrow(new RuntimeException("ERROR"));
 
@@ -85,7 +85,7 @@ class OrderControllerTest {
 
     @Test
     void create_InvalidRequest() throws Exception {
-        var req = new OrderCreateRequest(null, "1", "", "", "");
+        var req = new OrderCreateRequest(null, "1", "", "", "Moscow", "");
 
         mockMvc.perform(put(CREATE)
                         .content(mapper.writeValueAsString(req))

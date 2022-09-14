@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.dbunit.Assertion;
 import org.dbunit.DataSourceBasedDBTestCase;
 import org.dbunit.database.DatabaseConfig;
+import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.ReplacementDataSet;
@@ -19,7 +20,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 import static org.dbunit.dataset.filter.DefaultColumnFilter.excludedColumnsTable;
@@ -78,10 +81,14 @@ public class AbstractDbTest extends DataSourceBasedDBTestCase {
         return dataset;
     }
 
-    protected void setupData(String xml) throws Exception {
-        var flatXmlDataSet = new FlatXmlDataSetBuilder().build(
-                Objects.requireNonNull(this.getClass().getResource(xml)));
-        dataset = createReplacementDataset(flatXmlDataSet);
+    protected void setupData(String... files) throws Exception {
+        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+        IDataSet ret = null;
+        List<IDataSet> datasets = new ArrayList<>();
+        for (var f: files) {
+            datasets.add(builder.build(Objects.requireNonNull(this.getClass().getResource(f))));
+        }
+        dataset = createReplacementDataset(new CompositeDataSet(datasets.toArray(new IDataSet[] {})));
         setUp();
     }
 

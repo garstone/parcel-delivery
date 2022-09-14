@@ -45,7 +45,7 @@ public class OrderService implements IOrderService {
         return mapper.toOrderDetailsResponse(saved);
     }
 
-    @Override
+    @Override //todo нельзя отменить, если заказ уже у курьера
     public void cancel(UUID id) {
         var order = getOrThrow(id);
         order.setStatus(Status.CANCELED);
@@ -67,6 +67,9 @@ public class OrderService implements IOrderService {
     @Override
     public List<OrderDetails> getByUserId(UUID userId) {
         List<Order> orders = repository.findAllByUserId(userId);
+        if (orders.size() == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Orders with user id=%s do not exist", userId));
+        }
         return orders.stream().map(mapper::toOrderDetailsResponse).toList();
     }
 

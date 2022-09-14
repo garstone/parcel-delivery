@@ -49,6 +49,9 @@ public class Order {
     @Column
     private String destination;
 
+    @Column(name = "pickup_location", nullable = false)
+    private String pickupLocation;
+
     @Transient
     private Coordinates coordinates;
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <orders user_id="${id1}" user_name="Vladimir"
-    user_phone="+79991234567" destination="Moscow, Kremlin" comments="comments"
+    <orders id="${id1}" user_id="${userId1}" user_name="Vladimir"
+    user_phone="+79991234567" destination="Moscow, Kremlin" pickup_location="Moscow" comments="comments"
     courier_id="[null]" courier_name="[null]" courier_phone="[null]" delivery_datetime="[null]" order_number="0"
             pickup_datetime="[null]" status="CREATED"
     />

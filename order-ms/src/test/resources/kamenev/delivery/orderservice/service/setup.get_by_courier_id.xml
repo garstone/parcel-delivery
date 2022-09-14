@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <orders id="${id3}" user_id="${userId2}" user_name="a"
+    user_phone="+79991234567" destination="DC Washington" pickup_location="Moscow" comments="some comments"
+    courier_id="${id4}" courier_name="Petr" courier_phone="+71231231212" delivery_datetime="1999-01-08 04:05:06" order_number="3"
+            pickup_datetime="[null]" status="CREATED" created_at="1999-01-08 04:05:06" updated_at="1999-01-08 04:05:06"
+    />
+</dataset>

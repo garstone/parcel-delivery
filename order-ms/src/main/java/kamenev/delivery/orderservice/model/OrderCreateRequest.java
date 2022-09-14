@@ -10,6 +10,7 @@ public record OrderCreateRequest(
         @NotEmpty String phone,
         @NotEmpty String name,
         @NotEmpty String destination,
+        @NotEmpty String pickupLocation,
         String comments
 ) {
 }

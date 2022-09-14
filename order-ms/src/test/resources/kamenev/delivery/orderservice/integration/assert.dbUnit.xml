@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dataset>
-    <orders id="89d77319-a775-457f-b447-76bfa62ef502" user_id="89d77319-a775-457f-b447-76bfa62ef502"
-            user_name="Vladimir" user_phone="+79991234567" destination="Moscow, Kremlin" comments="comments"
-            courier_id='[null]' courier_name="[null]" courier_phone="[null]" delivery_datetime="1999-01-08 04:05:06" order_number="0"
-            pickup_datetime="1999-01-08 04:05:06" status="CREATED" created_at="1999-01-08 04:05:06" updated_at="1999-01-08 04:05:06"
-    />
-</dataset>
