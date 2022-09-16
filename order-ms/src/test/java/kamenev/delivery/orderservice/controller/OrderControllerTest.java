@@ -256,7 +256,7 @@ class OrderControllerTest {
 
     @Test
     void assign() throws Exception {
-        var req = new AssignToCourierRequest(UUID.randomUUID(), UUID.randomUUID(), "Petya");
+        var req = new AssignToCourierRequest(UUID.randomUUID(), UUID.randomUUID(), "Petya", "123");
 
         when(orderService.assign(req)).thenReturn(orderDto1);
 

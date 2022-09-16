@@ -98,6 +98,7 @@ public class OrderService implements IOrderService {
         Order order = getOrThrow(request.orderId());
         order.setCourierId(request.courierId());
         order.setCourierName(request.name());
+        order.setCourierPhone(request.courierPhone());
         order = repository.save(order);
         return mapper.toDto(order);
     }

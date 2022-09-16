@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <orders id="${id1}" user_id="${userId1}" user_name="Vladimir"
+    user_phone="+79991234567" destination="Moscow, Kremlin" pickup_location="Moscow" comments="comments"
+    courier_id="${id3}" courier_name="Petrov" courier_phone="+79991234568" delivery_datetime="2022-01-08 04:05:06" order_number="0"
+            pickup_datetime="[null]" status="DELIVERED" created_at="1999-01-08 04:05:06" updated_at="1999-01-08 04:05:06"
+    />
+    <orders id="${id2}" user_id="${userId1}" user_name="Vladimir"
+            user_phone="+79991234567" destination="DC Washington" pickup_location="Moscow" comments="some comments"
+            courier_id="[null]" courier_name="[null]" courier_phone="[null]" delivery_datetime="[null]" order_number="1"
+            pickup_datetime="[null]" status="CREATED" created_at="1999-01-08 04:05:06" updated_at="1999-01-08 04:05:06"
+    />
+</dataset>

@@ -8,6 +8,6 @@ import java.util.UUID;
 public record AssignToCourierRequest(
         @NotNull UUID orderId,
         @NotNull UUID courierId,
-        @NotEmpty String name
-        ) {
+        @NotEmpty String name,
+        @NotEmpty String courierPhone) {
 }

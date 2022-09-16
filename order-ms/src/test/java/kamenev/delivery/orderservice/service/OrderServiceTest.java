@@ -1,6 +1,8 @@
 package kamenev.delivery.orderservice.service;
 
+import kamenev.delivery.orderservice.domain.Status;
 import kamenev.delivery.orderservice.integration.AbstractDbTest;
+import kamenev.delivery.orderservice.model.AssignToCourierRequest;
 import kamenev.delivery.orderservice.model.OrderCreateRequest;
 import kamenev.delivery.orderservice.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
@@ -111,23 +113,32 @@ class OrderServiceTest extends AbstractDbTest {
     }
 
     @Test
-    void getByCourierId() {
-
+    void getByCourierId() throws Exception {
+        setupData("setup.base.orders.xml");
+        var res = orderService.getByCourierId(p.id3);
+        assertEquals(1, res.size());
+        assertEquals("Moscow, Kremlin", res.get(0).getDestination());
     }
 
     @Test
-    void changeStatus() {
+    void changeStatus() throws Exception {
+        setupData("setup.base.orders.xml");
+        orderService.changeStatus(p.id1, Status.DELIVERED);
+        assertData("expected.change-status.ok.xml", EXCLUDED_COLS);
     }
 
     @Test
-    void getAll() {
+    void getAll() throws Exception {
+        setupData("setup.base.orders.xml");
+        var lst = orderService.getAll();
+        assertEquals(2, lst.size());
     }
 
     @Test
-    void assign() {
+    void assign() throws Exception {
+        setupData("setup.base.orders.xml");
+        orderService.assign(new AssignToCourierRequest(p.id2, p.id3, "Petrov", "+79991234568"));
+        assertData("expected.assign.ok.xml", EXCLUDED_COLS);
     }
 
-    @Test
-    void getCoordinates() {
-    }
 }

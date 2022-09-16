@@ -30,16 +30,12 @@ import static org.dbunit.dataset.filter.DefaultColumnFilter.excludedColumnsTable
 @Testcontainers
 @DirtiesContext
 public class AbstractDbTest extends DataSourceBasedDBTestCase {
+    public static final String EMPTY_XML = "src/test/resources/kamenev/delivery/orderservice/integration/empty.xml";
     private static final String dbName = "test";
     private static final String userName = "sa";
     private static final String password = "sa";
     private static final String imageName = "postgres:14.3";
-    public static final String EMPTY_XML = "src/test/resources/kamenev/delivery/orderservice/integration/empty.xml";
-    private IDataSet dataset;
     private static final PostgresqlDataTypeFactory dataTypeFactory = new PostgresqlDataTypeFactory();
-    protected final DatasetParameters p = new DatasetParameters();
-    private static DataSource dataSource;
-
     @SuppressWarnings({"rawtypes", "resource"})
     @Container
     private static final JdbcDatabaseContainer container = new PostgreSQLContainer(imageName)
@@ -47,9 +43,14 @@ public class AbstractDbTest extends DataSourceBasedDBTestCase {
             .withUsername(userName)
             .withPassword(password)
             .withInitScript("migration/schema.sql");
+    private static DataSource dataSource;
+    protected final DatasetParameters p = new DatasetParameters();
+    private IDataSet dataset;
 
     public AbstractDbTest() {
         super();
+        assert container.isRunning();
+
         System.setProperty("DB_URL", container.getJdbcUrl());
         System.setProperty("DB_USERNAME", container.getUsername());
         System.setProperty("DB_PASSWORD", container.getPassword());
@@ -58,7 +59,6 @@ public class AbstractDbTest extends DataSourceBasedDBTestCase {
         try {
             setupData();
         } catch (Exception ignored) {
-
         }
     }
 
@@ -85,10 +85,10 @@ public class AbstractDbTest extends DataSourceBasedDBTestCase {
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
         IDataSet ret = null;
         List<IDataSet> datasets = new ArrayList<>();
-        for (var f: files) {
+        for (var f : files) {
             datasets.add(builder.build(Objects.requireNonNull(this.getClass().getResource(f))));
         }
-        dataset = createReplacementDataset(new CompositeDataSet(datasets.toArray(new IDataSet[] {})));
+        dataset = createReplacementDataset(new CompositeDataSet(datasets.toArray(new IDataSet[]{})));
         setUp();
     }
 
@@ -119,7 +119,7 @@ public class AbstractDbTest extends DataSourceBasedDBTestCase {
         IDataSet actual = getConnection().createDataSet();
         var expected = createReplacementDataset(new FlatXmlDataSetBuilder().build(
                 Objects.requireNonNull(this.getClass().getResource(xml))));
-        for (ITable expectedTable: expected.getTables()) {
+        for (ITable expectedTable : expected.getTables()) {
             expectedTable = excludedColumnsTable(expectedTable, excludedColumns);
             var tableName = expectedTable.getTableMetaData().getTableName();
             var actualTable = excludedColumnsTable(actual.getTable(tableName), excludedColumns);
