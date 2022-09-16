@@ -19,7 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/orders")
+@RequestMapping(path = "/api/orders")
 @Validated
 public class OrderController {
 
@@ -31,7 +31,7 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PatchMapping("/change-destination")
+    @PatchMapping(value = "/change-destination", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderDetails> changeDestination(@Valid @RequestBody ChangeDestinationRequest request) {
         OrderDetails response = service.changeDestination(request.id(), request.destination());
         return ResponseEntity.ok(response);
@@ -43,39 +43,39 @@ public class OrderController {
         return HttpStatus.OK;
     }
 
-    @GetMapping("/details/{id}")
+    @GetMapping(value = "/details/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderDetails> getDetails(@NotNull @PathVariable UUID id) {
         return ResponseEntity.ok(service.get(id));
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping(value = "/user/{userId}", produces = APPLICATION_JSON_VALUE)
     public List<OrderDetails> getAllByUser(@NotNull @PathVariable UUID userId) {
         return service.getByUserId(userId);
     }
 
-    @GetMapping("/courier/{courierId}")
+    @GetMapping(value = "/courier/{courierId}", produces = APPLICATION_JSON_VALUE)
     public List<OrderDetails> getAllByCourier(@NotNull @PathVariable UUID courierId) {
         return service.getByCourierId(courierId);
     }
 
-    @PatchMapping("/change-status")
+    @PatchMapping(value = "/change-status", consumes = APPLICATION_JSON_VALUE)
     public HttpStatus changeStatus(@NotNull @RequestBody ChangeStatusRequest changeStatusRequest) {
         service.changeStatus(changeStatusRequest.orderId(), changeStatusRequest.status());
         return HttpStatus.OK;
     }
 
-    @GetMapping("/all")
+    @GetMapping(value = "/all", produces = APPLICATION_JSON_VALUE)
     public List<OrderDto> getAll() {
         return service.getAll();
     }
 
-    @PostMapping("/assign")
+    @PostMapping(value = "/assign", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public HttpStatus assign(@NotNull @RequestBody AssignToCourierRequest request) {
         service.assign(request);
         return HttpStatus.OK;
     }
 
-    @GetMapping("/track/{id}")
+    @GetMapping(value = "/track/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<TrackResponse> track(@NotNull @PathVariable UUID id) {
         return ResponseEntity.ok(service.getCoordinates(id));
     }

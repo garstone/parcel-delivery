@@ -67,8 +67,8 @@ public class OrderService implements IOrderService {
     @Override
     public List<OrderDetails> getByUserId(UUID userId) {
         List<Order> orders = repository.findAllByUserId(userId);
-        if (orders.size() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Orders with user id=%s do not exist", userId));
+        if (orders.isEmpty()) {
+            return List.of();
         }
         return orders.stream().map(mapper::toOrderDetailsResponse).toList();
     }
