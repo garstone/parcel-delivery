@@ -36,13 +36,14 @@ public class AbstractDbTest extends DataSourceBasedDBTestCase {
     private static final String password = "sa";
     private static final String imageName = "postgres:14.3";
     private static final PostgresqlDataTypeFactory dataTypeFactory = new PostgresqlDataTypeFactory();
-    @SuppressWarnings({"rawtypes", "resource"})
+
+    @SuppressWarnings({"rawtypes"})
     @Container
     private static final JdbcDatabaseContainer container = new PostgreSQLContainer(imageName)
             .withDatabaseName(dbName)
             .withUsername(userName)
-            .withPassword(password)
-            .withInitScript("migration/schema.sql");
+            .withPassword(password);
+
     private static DataSource dataSource;
     protected final DatasetParameters p = new DatasetParameters();
     private IDataSet dataset;
@@ -83,7 +84,6 @@ public class AbstractDbTest extends DataSourceBasedDBTestCase {
 
     protected void setupData(String... files) throws Exception {
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-        IDataSet ret = null;
         List<IDataSet> datasets = new ArrayList<>();
         for (var f : files) {
             datasets.add(builder.build(Objects.requireNonNull(this.getClass().getResource(f))));

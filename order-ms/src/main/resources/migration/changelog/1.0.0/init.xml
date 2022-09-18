@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-table-orders" author="garstone">
+        <createTable tableName="orders">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_phone" type="varchar(15)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="courier_id" type="uuid" />
+            <column name="courier_name" type="varchar(100)" />
+            <column name="courier_phone" type="varchar(15)" />
+            <column name="order_number" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="destination" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="pickup_location" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="status" type="varchar(20)">
+                <constraints nullable="false" />
+            </column>
+            <column name="delivery_datetime" type="timestamp" />
+            <column name="pickup_datetime" type="timestamp" />
+            <column name="comments" type="varchar(200)" />
+            <column name="created_at" type="timestamp" />
+            <column name="updated_at" type="timestamp" />
+        </createTable>
+
+        <addAutoIncrement tableName="orders" columnName="order_number" startWith="1" incrementBy="1"/>
+    </changeSet>
+
+</databaseChangeLog>

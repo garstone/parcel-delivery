@@ -1,4 +1,18 @@
 spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/
+    username: admin
+    password: pass
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: orderHikariPool
+      auto-commit: false
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
   kafka:
     listener:
       ack-mode: manual_immediate

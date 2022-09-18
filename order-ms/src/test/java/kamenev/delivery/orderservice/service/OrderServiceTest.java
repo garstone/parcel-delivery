@@ -4,7 +4,6 @@ import kamenev.delivery.orderservice.domain.Status;
 import kamenev.delivery.orderservice.integration.AbstractDbTest;
 import kamenev.delivery.orderservice.model.AssignToCourierRequest;
 import kamenev.delivery.orderservice.model.OrderCreateRequest;
-import kamenev.delivery.orderservice.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -21,17 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class OrderServiceTest extends AbstractDbTest {
 
     @Autowired
-    private OrderRepository orderRepository;
-
-    @Autowired
     private IOrderService orderService;
-
-//    @PersistenceContext
-//    private EntityManager entityManager;
-
-//    @Autowired
-//    private ApplicationContext context;
-
     private static final String[] EXCLUDED_COLS = {"id", "created_at", "updated_at"};
 
     @Test

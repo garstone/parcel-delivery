@@ -8,4 +8,11 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
+
+  liquibase:
+    contexts: test
+
+logging:
+  level:
+    liquibase: DEBUG
