@@ -4,6 +4,7 @@ volumes:
   postgres-admin:
   postgres-courier:
   postgres-user:
+  postgres-auth:
 
 networks:
   parcel-delivery:
@@ -80,26 +81,6 @@ services:
     networks:
       parcel-delivery:
 
-#  postgres-user:
-#    container_name: postgres-user
-#    image: bitnami/postgresql:14.3.0
-#    restart: unless-stopped
-#    depends_on:
-#      - kafka
-#    environment:
-#      - POSTGRES_PASSWORD=pass
-#      - POSTGRES_USER=admin
-#      - POSTGRES_DB=user
-#      - TZ=GMT+2
-#      - PGTZ=GMT+2
-#    #      - PGDATA=/data/postgres
-#    ports:
-#      - "5433:5432"
-#    volumes:
-#      - postgres-user:/data/postgres
-#    networks:
-#      parcel-delivery:
-
   postgres-order:
     container_name: postgres-order
     image: bitnami/postgresql:14.3.0
@@ -110,33 +91,12 @@ services:
       - POSTGRES_DB=order
       - TZ=GMT+2
       - PGTZ=GMT+2
-    #      - PGDATA=/data/postgres
     ports:
       - "5434:5432"
     volumes:
       - postgres-order:/data/postgres
     networks:
       parcel-delivery:
-
-#  postgres-courier:
-#    container_name: postgres-courier
-#    image: bitnami/postgresql:14.3.0
-#    restart: unless-stopped
-#    depends_on:
-#      - kafka
-#    environment:
-#      - POSTGRES_PASSWORD=pass
-#      - POSTGRES_USER=admin
-#      - POSTGRES_DB=auction
-#      - TZ=GMT+2
-#      - PGTZ=GMT+2
-#    #      - PGDATA=/data/postgres
-#    ports:
-#      - "5435:5432"
-#    volumes:
-#      - postgres-courier:/data/postgres
-#    networks:
-#      parcel-delivery:
 
   identity-service:
     container_name: identity-service
@@ -151,19 +111,6 @@ services:
     environment:
       - "SPRING_PROFILES_ACTIVE=prod"
 
-#  courier-service:
-#    container_name: courier-service
-#    depends_on:
-#      - kafka
-#      - postgres-courier
-#    build:
-#      context: ..\courierservice
-#      dockerfile: Dockerfile
-#    networks:
-#      parcel-delivery:
-#    environment:
-#      - "SPRING_PROFILES_ACTIVE=prod"
-
   order-service:
     container_name: order-service
     depends_on:
@@ -176,3 +123,34 @@ services:
       parcel-delivery:
     entrypoint:
       - "SPRING_PROFILES_ACTIVE=prod"
+
+  postgres-keycloak:
+    container_name: postgres-keycloak
+    image: bitnami/postgresql:14.3.0
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: keycloak
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres-auth:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+  keycloak:
+    image: jboss/keycloak:16.1.1
+    container_name: keycloak
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres-keycloak
+      DB_DATABASE: keycloak
+#      DB_SCHEMA: keycloak
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - "8484:8080"
+    depends_on:
+      - postgres-keycloak
