@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>kamenev.delivery</groupId>
-	<artifactId>orderservice</artifactId>
+	<artifactId>order-ms</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>order-ms</name>
 	<properties>
