@@ -1,6 +1,6 @@
 #!bash
 
-cd ../auth-ms
+cd ../tokens-ms
 docker build
 docker push
 

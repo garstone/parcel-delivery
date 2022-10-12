@@ -1,6 +1,6 @@
 #!bash
 
-cd ../auth-ms
+cd ../tokens-ms
 ./mvnw clean package -Dmaven.test.skip=true
 
 cd ../order-ms

@@ -4,7 +4,7 @@ volumes:
   postgres-admin:
   postgres-courier:
   postgres-user:
-  postgres-auth:
+  postgres-tokens:
 
 networks:
   parcel-delivery:
@@ -98,13 +98,30 @@ services:
     networks:
       parcel-delivery:
 
+  postgres-tokens:
+    container_name: postgres-tokens
+    image: bitnami/postgresql:14.3.0
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=tokens
+      - TZ=GMT+2
+      - PGTZ=GMT+2
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres-tokens:/data/postgres
+    networks:
+      parcel-delivery:
+
   identity-service:
     container_name: identity-service
     depends_on:
       - kafka
       - postgres-identity
     build:
-      context: ..\identityservice
+      context: ../identity-ms
       dockerfile: Dockerfile
     networks:
       parcel-delivery:
@@ -117,40 +134,9 @@ services:
       - kafka
       - postgres-order
     build:
-      context: ..\orderservice
+      context: ../order-ms
       dockerfile: Dockerfile
     networks:
       parcel-delivery:
     entrypoint:
       - "SPRING_PROFILES_ACTIVE=prod"
-
-  postgres-keycloak:
-    container_name: postgres-keycloak
-    image: bitnami/postgresql:14.3.0
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: keycloak
-    ports:
-      - "5435:5432"
-    volumes:
-      - postgres-auth:/var/lib/postgresql/data
-      - ./initdb:/docker-entrypoint-initdb.d
-    restart: unless-stopped
-
-  keycloak:
-    image: jboss/keycloak:16.1.1
-    container_name: keycloak
-    environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: postgres-keycloak
-      DB_DATABASE: keycloak
-#      DB_SCHEMA: keycloak
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
-    ports:
-      - "8484:8080"
-    depends_on:
-      - postgres-keycloak

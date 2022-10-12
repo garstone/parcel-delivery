@@ -9,11 +9,8 @@ refresh - одноразовый токен с большим ttl. тоже ле
 и если совпадает, то выдаем JWT+RT
 
 1. OrderService
-- auth
-- tests
 - check configs
 - messaging
-- database migration? liquibase?
 - order lifecycle
 2. IdentityService
 3. k8s
@@ -22,7 +19,8 @@ refresh - одноразовый токен с большим ttl. тоже ле
 - auth
 5. etc
 - add passwords
-- think: move authority to nginx...?
+- add MSA patterns (circuit breaker, etc... to read about)
+- HTTPS
 6. Tracking Service
 
 В конце - убрать все коменты и todos
