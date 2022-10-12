@@ -1,0 +1,34 @@
+app:
+  tokens-ms:
+    url: http://localhost:8081
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: identity
+          uri: http://identity-service:7000/
+          predicates:
+            - Path=/identity/**
+          filters:
+            - RemoveRequestHeader=Bearer
+
+        - id: order
+          uri: http://order-service:7000/
+          predicates:
+            - Path=/order/**
+          filters:
+            - RemoveRequestHeader=Bearer
+
+        - id: tokens
+          uri: http://localhost:8081/
+          predicates:
+            - Path=/auth/**
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+
+server:
+  port: 8082
