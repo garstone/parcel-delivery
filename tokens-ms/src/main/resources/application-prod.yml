@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5435/tokens
+    username: admin
+    password: pass
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: orderHikariPool
+      auto-commit: false
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+
+app:
+  security:
+    auth:
+      jwt:
+        base64-secret: QEQjc37ZVpN3FeHv19bCEkta9Q/laJHx+srin4lbEhCGwZ8qpzzdR08+zyumduyz6d80VGEfCf4tduZCc31ZOw==
+        access-token-ttl-minutes: 10
+        refresh-token-ttl-hours: 30000
+
+application:
+  cors:
+    allowedOrigins: "*"
+    allowedHeaders: "*"
+    allowedMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG

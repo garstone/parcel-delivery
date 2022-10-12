@@ -1,0 +1,28 @@
+spring:
+  liquibase:
+    change-log: classpath:migration/db.changelog.master.xml
+
+app:
+  security:
+    auth:
+      jwt:
+        base64-secret: QEQjc37ZVpN3FeHv19bCEkta9Q/laJHx+srin4lbEhCGwZ8qpzzdR08+zyumduyz6d80VGEfCf4tduZCc31ZOw==
+        access-token-ttl-minutes: 10
+        refresh-token-ttl-hours: 30000
+
+application:
+  cors:
+    allowedOrigins: "*"
+    allowedHeaders: "*"
+    allowedMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+    liquibase: INFO

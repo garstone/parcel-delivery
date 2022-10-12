@@ -1,4 +1,4 @@
-package kamenev.delivery.auth.security.enums;
+package kamenev.delivery.common.security;
 
 public enum Roles {
     ROLE_ADMIN,

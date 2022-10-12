@@ -1,4 +1,4 @@
-package kamenev.delivery.auth.security.enums;
+package kamenev.delivery.tokens.security;
 
 public enum TokenType {
     REFRESH, ACCESS

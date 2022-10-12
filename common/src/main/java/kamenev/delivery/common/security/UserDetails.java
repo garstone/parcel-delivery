@@ -1,9 +1,6 @@
 package kamenev.delivery.common.security;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.util.StringUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -26,13 +23,7 @@ public final class UserDetails implements Serializable {
     private String email;
     private String phoneNumber;
     @Builder.Default
-    private Set<? extends GrantedAuthority> authorities = new HashSet<>();
-    @JsonIgnore
-    private String password;
-
-    public String stringifyAuthorities() {
-        return StringUtils.collectionToCommaDelimitedString(authorities);
-    }
+    private Set<String> authorities = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -44,5 +35,15 @@ public final class UserDetails implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "UserDetails{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", authorities=" + authorities +
+                '}';
     }
 }
